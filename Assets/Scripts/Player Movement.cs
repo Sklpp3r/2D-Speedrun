@@ -8,7 +8,7 @@ using System.Collections.Generic;
  public class PlayerMovement : MonoBehaviour
 {
     public Rigidbody2D Me;
-    [FormerlySerializedAs("Flip")] public SpriteRenderer hokkabaz;
+   
     
     private float movementspeed = 6.0f;
     private float jump = 5.0f;
@@ -16,7 +16,6 @@ using System.Collections.Generic;
     private void Start()
     {
         Me = GetComponent<Rigidbody2D>();
-        hokkabaz = GetComponent<SpriteRenderer>();
     }
 
 
@@ -41,9 +40,18 @@ using System.Collections.Generic;
         if(Input.GetKeyDown(KeyCode.Mouse0))
         {
             Me.gravityScale *= -1;
-
-            hokkabaz.flipY = true;
-            
+            Flip();
         }
+        
     }
+
+    void Flip()
+    {
+        Vector3 Scaler = transform.localScale;
+        Scaler.y *= -1;
+        transform.localScale = Scaler;
+        
+    }
+    
+    
 }
