@@ -34,32 +34,26 @@ public class PlayerMovement : MonoBehaviour
             transform.Translate(Vector3.left * movementspeed * Time.deltaTime);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+
+
+        if (Input.GetKey(KeyCode.Space) && characterRB.gravityScale == 1)
         {
-            Jumpdeneme();
+            transform.Translate(Vector3.up * jump * Time.deltaTime);
+        }
+        if (Input.GetKey(KeyCode.Space) && characterRB.gravityScale == -1)
+        {
+            transform.Translate(Vector3.down * jump * Time.deltaTime);
         }
 
 
 
-            /*
-            if(Input.GetKey(KeyCode.Space) && characterRB.gravityScale == 1)
-            {
-            transform.Translate(Vector3.up * jump * Time.deltaTime);
-            }
-            if(Input.GetKey(KeyCode.Space) && characterRB.gravityScale == -1)
-            {
-            transform.Translate(Vector3.down * jump * Time.deltaTime);
-            }
-            */
 
-
-
-            //Ters Dönme
-            if (Input.GetKeyDown(KeyCode.Mouse0))
-            {
-                characterRB.gravityScale *= -1;
-                Flip();
-            }
+        //Ters Dönme
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            characterRB.gravityScale *= -1;
+            Flip();
+        }
 
     }
 
@@ -69,12 +63,6 @@ public class PlayerMovement : MonoBehaviour
         Scaler.y *= -1;
         transform.localScale = Scaler;
 
-    }
-
-
-    void Jumpdeneme()
-    {
-        characterRB.velocity = new Vector2(characterRB.velocity.x, jump);
     }
 
 
