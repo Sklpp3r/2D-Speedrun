@@ -1,13 +1,13 @@
  using System;
  using System.Collections;
-using System.Collections.Generic;
+ using System.Collections.Generic;
  using Unity.VisualScripting;
  using UnityEngine;
  using UnityEngine.Serialization;
 
  public class PlayerMovement : MonoBehaviour
 {
-    public Rigidbody2D Me;
+    public Rigidbody2D characterRB;
    
     
     private float movementspeed = 6.0f;
@@ -15,13 +15,15 @@ using System.Collections.Generic;
 
     private void Start()
     {
-        Me = GetComponent<Rigidbody2D>();
+        characterRB = GetComponent<Rigidbody2D>();
     }
 
 
     // Update is called once per frame
     void Update()
     {
+
+        //Movement
         if(Input.GetKey(KeyCode.D))
         {
         transform.Translate(Vector3.right * movementspeed * Time.deltaTime);
@@ -32,18 +34,27 @@ using System.Collections.Generic;
         transform.Translate(Vector3.left * movementspeed * Time.deltaTime);
         }
 
-        if(Input.GetKey(KeyCode.Space) && Me.gravityScale == 1)
+
+
+
+
+        //Zıplama
+        if(Input.GetKey(KeyCode.Space) && characterRB.gravityScale == 1)
         {
         transform.Translate(Vector3.up * jump * Time.deltaTime);
         }
-        if(Input.GetKey(KeyCode.Space) && Me.gravityScale == -1)
+        if(Input.GetKey(KeyCode.Space) && characterRB.gravityScale == -1)
         {
-                transform.Translate(Vector3.down * jump * Time.deltaTime);
+        transform.Translate(Vector3.down * jump * Time.deltaTime);
         }
         
+
+
+
+        //Ters Dönme
         if(Input.GetKeyDown(KeyCode.Mouse0))
         {
-            Me.gravityScale *= -1;
+            characterRB.gravityScale *= -1;
             Flip();
         }
         
