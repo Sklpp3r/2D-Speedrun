@@ -32,9 +32,13 @@ using System.Collections.Generic;
         transform.Translate(Vector3.left * movementspeed * Time.deltaTime);
         }
 
-        if(Input.GetKey(KeyCode.Space))
+        if(Input.GetKey(KeyCode.Space) && Me.gravityScale == 1)
         {
         transform.Translate(Vector3.up * jump * Time.deltaTime);
+        }
+        if(Input.GetKey(KeyCode.Space) && Me.gravityScale == -1)
+        {
+                transform.Translate(Vector3.down * jump * Time.deltaTime);
         }
         
         if(Input.GetKeyDown(KeyCode.Mouse0))
