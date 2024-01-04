@@ -1,15 +1,15 @@
- using System;
- using System.Collections;
- using System.Collections.Generic;
- using Unity.VisualScripting;
- using UnityEngine;
- using UnityEngine.Serialization;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.Serialization;
 
- public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
     public Rigidbody2D characterRB;
-   
-    
+
+
     private float movementspeed = 6.0f;
     private float jump = 5.0f;
 
@@ -24,40 +24,43 @@
     {
 
         //Movement
-        if(Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.D))
         {
-        transform.Translate(Vector3.right * movementspeed * Time.deltaTime);
+            transform.Translate(Vector3.right * movementspeed * Time.deltaTime);
         }
 
-        if(Input.GetKey(KeyCode.A)) 
+        if (Input.GetKey(KeyCode.A))
         {
-        transform.Translate(Vector3.left * movementspeed * Time.deltaTime);
+            transform.Translate(Vector3.left * movementspeed * Time.deltaTime);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Jumpdeneme();
         }
 
 
 
-
-
-        //Zıplama
-        if(Input.GetKey(KeyCode.Space) && characterRB.gravityScale == 1)
-        {
-        transform.Translate(Vector3.up * jump * Time.deltaTime);
-        }
-        if(Input.GetKey(KeyCode.Space) && characterRB.gravityScale == -1)
-        {
-        transform.Translate(Vector3.down * jump * Time.deltaTime);
-        }
-        
+            /*
+            if(Input.GetKey(KeyCode.Space) && characterRB.gravityScale == 1)
+            {
+            transform.Translate(Vector3.up * jump * Time.deltaTime);
+            }
+            if(Input.GetKey(KeyCode.Space) && characterRB.gravityScale == -1)
+            {
+            transform.Translate(Vector3.down * jump * Time.deltaTime);
+            }
+            */
 
 
 
-        //Ters Dönme
-        if(Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            characterRB.gravityScale *= -1;
-            Flip();
-        }
-        
+            //Ters Dönme
+            if (Input.GetKeyDown(KeyCode.Mouse0))
+            {
+                characterRB.gravityScale *= -1;
+                Flip();
+            }
+
     }
 
     void Flip()
@@ -65,8 +68,14 @@
         Vector3 Scaler = transform.localScale;
         Scaler.y *= -1;
         transform.localScale = Scaler;
-        
+
     }
-    
-    
+
+
+    void Jumpdeneme()
+    {
+        characterRB.velocity = new Vector2(characterRB.velocity.x, jump);
+    }
+
+
 }
