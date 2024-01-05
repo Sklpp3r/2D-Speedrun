@@ -2,20 +2,28 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public Rigidbody2D characterRB;
+    private float _horizontal;
+    [SerializeField] Rigidbody2D myRB;
+
+    [SerializeField] private float speed = 6.0f;
+    [SerializeField] private float jump = 5.0f;
+
+    [SerializeField] private Transform groundSensorTransform;
+    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private Animator myAnimator;
 
 
-    private float movementspeed = 6.0f;
-    private float jump = 5.0f;
+
 
     private void Start()
     {
-        characterRB = GetComponent<Rigidbody2D>();
+        myRB = GetComponent<Rigidbody2D>();
     }
 
 
@@ -23,26 +31,20 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
 
+
+
+
         //Movement
-        if (Input.GetKey(KeyCode.D))
+        _horizontal = Input.GetAxisRaw("Horizontal");
+
+        if (Input.GetButtonDown("Jump") && IsGrounded())
         {
-            transform.Translate(Vector3.right * movementspeed * Time.deltaTime);
+            myRB.velocity = new Vector2(myRB.velocity.x, jump);
         }
 
-        if (Input.GetKey(KeyCode.A))
+        if (Input.GetButtonUp("Jump"))
         {
-            transform.Translate(Vector3.left * movementspeed * Time.deltaTime);
-        }
-
-
-
-        if (Input.GetKey(KeyCode.Space) && characterRB.gravityScale == 1)
-        {
-            transform.Translate(Vector3.up * jump * Time.deltaTime);
-        }
-        if (Input.GetKey(KeyCode.Space) && characterRB.gravityScale == -1)
-        {
-            transform.Translate(Vector3.down * jump * Time.deltaTime);
+            myRB.velocity = new Vector2(myRB.velocity.x, myRB.velocity.y * 0.5f);
         }
 
 
@@ -51,7 +53,8 @@ public class PlayerMovement : MonoBehaviour
         //Ters Dönme
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            characterRB.gravityScale *= -1;
+            myRB.gravityScale *= -1;
+            jump *= -1;
             Flip();
         }
 
@@ -63,6 +66,55 @@ public class PlayerMovement : MonoBehaviour
         Scaler.y *= -1;
         transform.localScale = Scaler;
 
+    }
+
+    void FixedUpdate()
+    {
+        Run();
+
+        IsGrounded();
+    }
+
+
+
+    void Run()
+    {
+        //Kosma
+        myRB.velocity = new Vector2(_horizontal * speed, myRB.velocity.y);
+
+
+        //Karakter saga sola donus
+        if (_horizontal == -1)
+        {
+            Vector2 Scaler = transform.localScale;
+            Scaler.x = -1;
+            transform.localScale = Scaler;
+        }
+        else
+        {
+            Vector2 Scaler = transform.localScale;
+            Scaler.x = 1;
+            transform.localScale = Scaler;
+        }
+
+        //Kosma animasyonu
+        if (_horizontal != 0)
+        {
+            myAnimator.SetBool("isRunning", true);
+        }
+        else
+        {
+            myAnimator.SetBool("isRunning", false);
+        }
+
+
+    }
+
+
+    bool IsGrounded()
+    {
+        bool isGrounded = Physics2D.OverlapCircle(groundSensorTransform.position, 0.15f, groundLayer);
+        return isGrounded;
     }
 
 
