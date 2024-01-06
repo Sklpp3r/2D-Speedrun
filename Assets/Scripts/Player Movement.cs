@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using Unity.VisualScripting;
 using UnityEditor;
+using UnityEditor.ShortcutManagement;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -12,8 +14,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] Rigidbody2D myRB;
 
     [SerializeField] private float speed = 6.0f;
-    [SerializeField] private float jump = 8.0f;
-    [SerializeField] private int maxJumps = 2;
+    [SerializeField] private float jump = 7.0f;
+    [SerializeField] private int maxJumpValue = 1;
+    [SerializeField] private int maxJump;
 
     [SerializeField] private Transform groundSensorTransform;
     [SerializeField] private LayerMask groundLayer;
@@ -25,6 +28,7 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         myRB = GetComponent<Rigidbody2D>();
+        maxJump = maxJumpValue;
     }
 
 
@@ -32,24 +36,23 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
 
-
-
-
         //Movement
         _horizontal = Input.GetAxisRaw("Horizontal");
 
-        if (Input.GetButtonDown("Jump") && IsGrounded())
+        //Jump ve double jump
+        if (IsGrounded() == true)
         {
-            myRB.velocity = new Vector2(myRB.velocity.x, jump);
+            maxJump = maxJumpValue;
         }
-
-       
-
-
+        if (Input.GetButtonDown("Jump") && maxJump > 0)
+        {
+            maxJump--;
+            myRB.velocity = Vector2.up * jump;
+        }
 
 
         //Ters Dönme
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetKeyDown(KeyCode.Mouse0) && IsGrounded() == true)
         {
             myRB.gravityScale *= -1;
             jump *= -1;
@@ -88,7 +91,7 @@ public class PlayerMovement : MonoBehaviour
             Scaler.x = -1;
             transform.localScale = Scaler;
         }
-        
+
         if (Input.GetKey(KeyCode.D))
         {
             Vector2 Scaler = transform.localScale;
@@ -115,6 +118,5 @@ public class PlayerMovement : MonoBehaviour
         bool isGrounded = Physics2D.OverlapCircle(groundSensorTransform.position, 0.15f, groundLayer);
         return isGrounded;
     }
-
 
 }

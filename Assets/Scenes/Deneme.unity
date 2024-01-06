@@ -180,7 +180,7 @@ GameObject:
   - component: {fileID: 636160879}
   - component: {fileID: 636160878}
   - component: {fileID: 636160877}
-  - component: {fileID: 636160876}
+  - component: {fileID: 636160882}
   - component: {fileID: 636160881}
   m_Layer: 6
   m_Name: Player
@@ -189,26 +189,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &636160876
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 636160875}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 97f4e4df5ecb00e4c80fe2b79e55c2e0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myRB: {fileID: 0}
-  speed: 6
-  jump: 8
-  groundSensorTransform: {fileID: 1948180916}
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 8
-  myAnimator: {fileID: 636160881}
 --- !u!50 &636160877
 Rigidbody2D:
   serializedVersion: 4
@@ -370,6 +350,28 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &636160882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 636160875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97f4e4df5ecb00e4c80fe2b79e55c2e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myRB: {fileID: 0}
+  speed: 6
+  jump: 7
+  maxJumpValue: 1
+  maxJump: 0
+  groundSensorTransform: {fileID: 1948180916}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  myAnimator: {fileID: 636160881}
 --- !u!1 &1233790283
 GameObject:
   m_ObjectHideFlags: 0
