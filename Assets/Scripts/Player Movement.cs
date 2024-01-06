@@ -12,7 +12,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] Rigidbody2D myRB;
 
     [SerializeField] private float speed = 6.0f;
-    [SerializeField] private float jump = 5.0f;
+    [SerializeField] private float jump = 8.0f;
+    [SerializeField] private int maxJumps = 2;
 
     [SerializeField] private Transform groundSensorTransform;
     [SerializeField] private LayerMask groundLayer;
@@ -42,10 +43,7 @@ public class PlayerMovement : MonoBehaviour
             myRB.velocity = new Vector2(myRB.velocity.x, jump);
         }
 
-        if (Input.GetButtonUp("Jump"))
-        {
-            myRB.velocity = new Vector2(myRB.velocity.x, myRB.velocity.y * 0.5f);
-        }
+       
 
 
 
@@ -84,13 +82,14 @@ public class PlayerMovement : MonoBehaviour
 
 
         //Karakter saga sola donus
-        if (_horizontal == -1)
+        if (Input.GetKey(KeyCode.A))
         {
             Vector2 Scaler = transform.localScale;
             Scaler.x = -1;
             transform.localScale = Scaler;
         }
-        else
+        
+        if (Input.GetKey(KeyCode.D))
         {
             Vector2 Scaler = transform.localScale;
             Scaler.x = 1;
