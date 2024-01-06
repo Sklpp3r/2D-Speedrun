@@ -12,7 +12,7 @@ using UnityEngine.Serialization;
 public class Player_Movement : MonoBehaviour
 {
     private float _horizontal;
-    [SerializeField] Rigidbody2D myRB;//
+    [SerializeField] Rigidbody2D myRB;
 
     [SerializeField] private float speed = 6.0f;
     [SerializeField] private float jump = 7.0f;
@@ -67,7 +67,7 @@ public class Player_Movement : MonoBehaviour
         //Ters Dönme
         if (Input.GetKeyDown(KeyCode.Mouse0) && maxFlip > 0)
         {
-            
+
             maxFlip--;
             myRB.gravityScale *= -1;
             jump *= -1;
