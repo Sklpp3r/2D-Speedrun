@@ -17,6 +17,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float jump = 7.0f;
     [SerializeField] private int maxJumpValue = 1;
     [SerializeField] private int maxJump;
+    [SerializeField] private int maxFlipValue = 1;
+    [SerializeField] private int maxFlip;
 
     [SerializeField] private Transform groundSensorTransform;
     [SerializeField] private LayerMask groundLayer;
@@ -29,6 +31,7 @@ public class PlayerMovement : MonoBehaviour
     {
         myRB = GetComponent<Rigidbody2D>();
         maxJump = maxJumpValue;
+        maxFlip = maxFlipValue;
     }
 
 
@@ -42,6 +45,7 @@ public class PlayerMovement : MonoBehaviour
         //Jump ve double jump
         if (IsGrounded() == true)
         {
+            maxFlip = maxFlipValue;
             maxJump = maxJumpValue;
         }
         if (Input.GetButtonDown("Jump") && maxJump > 0)
@@ -52,8 +56,9 @@ public class PlayerMovement : MonoBehaviour
 
 
         //Ters Dönme
-        if (Input.GetKeyDown(KeyCode.Mouse0) && IsGrounded() == true)
+        if (Input.GetKeyDown(KeyCode.Mouse0) && maxFlip > 0)
         {
+            maxFlip--;
             myRB.gravityScale *= -1;
             jump *= -1;
             Flip();
