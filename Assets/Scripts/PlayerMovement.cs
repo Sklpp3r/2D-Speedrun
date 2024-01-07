@@ -2,7 +2,7 @@
 using UnityEngine;
 
 
-public class Player_Movement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
     private float _horizontal;
     [SerializeField] Rigidbody2D myRB;
@@ -115,7 +115,6 @@ public class Player_Movement : MonoBehaviour
     {
         MovementState state;
 
-        //Kosma animasyonu
         state = (_horizontal != 0 && IsGrounded() == true) ? MovementState.Running :
         (myRB.velocity.y > 0.1f) ? MovementState.Jumping :
         (myRB.velocity.y < -0.1f) ? MovementState.Falling :
