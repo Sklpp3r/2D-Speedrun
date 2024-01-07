@@ -39,6 +39,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Animasyonlar();
 
         //Movement
         _horizontal = Input.GetAxisRaw("Horizontal");
@@ -70,7 +71,7 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        Animasyonlar();
+
         RunTurn();
         IsGrounded();
     }
@@ -115,7 +116,7 @@ public class PlayerMovement : MonoBehaviour
     {
         MovementState state;
 
-        state = (_horizontal != 0 && IsGrounded() == true) ? MovementState.Running :
+        state = (_horizontal != 0 && IsGrounded()) ? MovementState.Running :
         (myRB.velocity.y > 0.1f) ? MovementState.Jumping :
         (myRB.velocity.y < -0.1f) ? MovementState.Falling :
         MovementState.Idle;
@@ -129,7 +130,7 @@ public class PlayerMovement : MonoBehaviour
 
     bool IsGrounded()
     {
-        bool isGrounded = Physics2D.OverlapCircle(groundSensorTransform.position, 0.15f, groundLayer);
+        bool isGrounded = Physics2D.OverlapCircle(groundSensorTransform.position, 0.30f, groundLayer);
         return isGrounded;
     }
     #endregion
