@@ -3,11 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Unity.VisualScripting;
+using Unity.VisualScripting.FullSerializer;
 using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEditor.ShortcutManagement;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class Player_Movement : MonoBehaviour
 {
@@ -67,10 +70,6 @@ public class Player_Movement : MonoBehaviour
         //Ters Dönme
         if (Input.GetKeyDown(KeyCode.Mouse0) && maxFlip > 0)
         {
-
-            maxFlip--;
-            myRB.gravityScale *= -1;
-            jump *= -1;
             Flip();
         }
 
@@ -83,39 +82,35 @@ public class Player_Movement : MonoBehaviour
         IsGrounded();
     }
 
+
+
+
+
+    
+
     void Flip()
     {
         Vector3 Scaler = transform.localScale;
         Scaler.y *= -1;
         transform.localScale = Scaler;
+        jump *= -1;
+        maxFlip--;
+        myRB.gravityScale *= -1;
 
     }
 
     void RunTurn()
     {
        
-        //Karakter saga sola donus
-        if (Input.GetKey(KeyCode.A))
-        {
-            Vector2 Scaler = transform.localScale;
-            Scaler.x = -1;
-            transform.localScale = Scaler;
-        }
+       float scaleDirection = Input.GetKey(KeyCode.A) ? -1f : Input.GetKey(KeyCode.D) ? 1f : 0f;
 
-        if (Input.GetKey(KeyCode.D))
-        {
-            Vector2 Scaler = transform.localScale;
-            Scaler.x = 1;
-            transform.localScale = Scaler;
-        }
+       if (scaleDirection != 0f)
+       {
+        Vector2 Scaler = transform.localScale;
+        Scaler.x = scaleDirection;
+        transform.localScale = Scaler;
+       }
 
-    }
-
-
-    bool IsGrounded()
-    {
-        bool isGrounded = Physics2D.OverlapCircle(groundSensorTransform.position, 0.15f, groundLayer);
-        return isGrounded;
     }
 
     void Animasyonlar()
@@ -123,31 +118,19 @@ public class Player_Movement : MonoBehaviour
         MovementState state;
 
         //Kosma animasyonu
-        if (_horizontal > 0)
-        {
-            state = MovementState.Running;
-        }
-        else if (_horizontal < 0)
-        {
-            state = MovementState.Running;
-        }
-        else
-        {
-            state = MovementState.Idle;
-        }
-
-        if (myRB.velocity.y > .1f)
-        {
-            state = MovementState.Jumping;
-        }
-        else if (myRB.velocity.y < -.1f)
-        {
-            state = MovementState.Falling;
-        }
+        state = (_horizontal != 0) ? MovementState.Running :
+        (myRB.velocity.y > 0.1f) ? MovementState.Jumping :
+        (myRB.velocity.y < -0.1f) ? MovementState.Falling :
+        MovementState.Idle;
 
         myAnimator.SetInteger("state", (int)state);
 
+    }
 
+    bool IsGrounded()
+    {
+        bool isGrounded = Physics2D.OverlapCircle(groundSensorTransform.position, 0.15f, groundLayer);
+        return isGrounded;
     }
 
 }
