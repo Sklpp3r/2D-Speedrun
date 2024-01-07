@@ -1,16 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Unity.VisualScripting;
-using Unity.VisualScripting.FullSerializer;
-using UnityEditor;
-using UnityEditor.Callbacks;
-using UnityEditor.ShortcutManagement;
+
 using UnityEngine;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
+
 
 public class Player_Movement : MonoBehaviour
 {
@@ -54,6 +44,8 @@ public class Player_Movement : MonoBehaviour
         _horizontal = Input.GetAxisRaw("Horizontal");
         myRB.velocity = new Vector2(_horizontal * speed, myRB.velocity.y);
 
+
+
         //Jump ve double jump
         if (IsGrounded() == true)
         {
@@ -67,6 +59,7 @@ public class Player_Movement : MonoBehaviour
         }
 
 
+
         //Ters Dönme
         if (Input.GetKeyDown(KeyCode.Mouse0) && maxFlip > 0)
         {
@@ -75,7 +68,7 @@ public class Player_Movement : MonoBehaviour
 
     }
 
-     void FixedUpdate()
+    void FixedUpdate()
     {
         Animasyonlar();
         RunTurn();
@@ -85,8 +78,7 @@ public class Player_Movement : MonoBehaviour
 
 
 
-
-    
+    #region Flip Gravity
 
     void Flip()
     {
@@ -98,27 +90,33 @@ public class Player_Movement : MonoBehaviour
         myRB.gravityScale *= -1;
 
     }
+    #endregion
+
+    #region Karater saga sola donus
 
     void RunTurn()
     {
-       
-       float scaleDirection = Input.GetKey(KeyCode.A) ? -1f : Input.GetKey(KeyCode.D) ? 1f : 0f;
 
-       if (scaleDirection != 0f)
-       {
-        Vector2 Scaler = transform.localScale;
-        Scaler.x = scaleDirection;
-        transform.localScale = Scaler;
-       }
+        float scaleDirection = Input.GetKey(KeyCode.A) ? -1f : Input.GetKey(KeyCode.D) ? 1f : 0f;
+
+        if (scaleDirection != 0f)
+        {
+            Vector2 Scaler = transform.localScale;
+            Scaler.x = scaleDirection;
+            transform.localScale = Scaler;
+        }
 
     }
+    #endregion
+
+    #region Animasyonlar
 
     void Animasyonlar()
     {
         MovementState state;
 
         //Kosma animasyonu
-        state = (_horizontal != 0) ? MovementState.Running :
+        state = (_horizontal != 0 && IsGrounded() == true) ? MovementState.Running :
         (myRB.velocity.y > 0.1f) ? MovementState.Jumping :
         (myRB.velocity.y < -0.1f) ? MovementState.Falling :
         MovementState.Idle;
@@ -126,11 +124,15 @@ public class Player_Movement : MonoBehaviour
         myAnimator.SetInteger("state", (int)state);
 
     }
+    #endregion
+
+    #region Groundcheck
 
     bool IsGrounded()
     {
         bool isGrounded = Physics2D.OverlapCircle(groundSensorTransform.position, 0.15f, groundLayer);
         return isGrounded;
     }
+    #endregion
 
 }
