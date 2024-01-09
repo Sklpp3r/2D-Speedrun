@@ -39,7 +39,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Animasyonlar();
+        
 
         //Movement
         _horizontal = Input.GetAxisRaw("Horizontal");
@@ -71,7 +71,7 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-
+        Animasyonlar();
         RunTurn();
         IsGrounded();
     }
