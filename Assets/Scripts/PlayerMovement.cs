@@ -26,6 +26,7 @@ public class PlayerMovement : MonoBehaviour
         Jumping,
         Falling
     }
+    MovementState state;
 
 
     private void Start()
@@ -39,11 +40,33 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        RunTurn();
+
+        myAnimator.SetInteger("state", (int)state);
+
+        //Animasyonlar
+        if (_horizontal != 0 && IsGrounded())
+        {
+            state = MovementState.Running;
+        }
+        else if (myRB.velocity.y > .1f)
+        {
+            state = MovementState.Jumping;
+        }
+        else if (myRB.velocity.y < -.1f)
+        {
+            state = MovementState.Falling;
+        }
+        else if (_horizontal == 0)
+        {
+            state = MovementState.Idle;
+        }
+
 
         //Movement
         _horizontal = Input.GetAxisRaw("Horizontal");
         myRB.velocity = new Vector2(_horizontal * speed, myRB.velocity.y);
+
 
 
 
@@ -71,8 +94,7 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        Animasyonlar();
-        RunTurn();
+
         IsGrounded();
     }
 
@@ -106,22 +128,6 @@ public class PlayerMovement : MonoBehaviour
             Scaler.x = scaleDirection;
             transform.localScale = Scaler;
         }
-
-    }
-    #endregion
-
-    #region Animasyonlar
-
-    void Animasyonlar()
-    {
-        MovementState state;
-
-        state = (_horizontal != 0 && IsGrounded()) ? MovementState.Running :
-        (myRB.velocity.y > 0.1f) ? MovementState.Jumping :
-        (myRB.velocity.y < -0.1f) ? MovementState.Falling :
-        MovementState.Idle;
-
-        myAnimator.SetInteger("state", (int)state);
 
     }
     #endregion
