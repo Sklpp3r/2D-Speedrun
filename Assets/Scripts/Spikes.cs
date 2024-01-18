@@ -17,7 +17,7 @@ public class Spikes : MonoBehaviour
         if (collision.gameObject.CompareTag("Trap"))
         {
             Die();
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene(1);
         }
     }
 
